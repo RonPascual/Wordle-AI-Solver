@@ -63,14 +63,14 @@ def wordle(guesses, answers):
             break
         guess = random.choice(filtered_guesses)
         remaining_guesses.remove(guess)
-        print(f"Attempt {attempts}: Bot guesses '{guess}'")
+        #print(f"Attempt {attempts}: Bot guesses '{guess}'")
 
         if not is_valid_guess(guess, guesses):
             print(f"Invalid guess: {guess}")
             continue
 
         result, feedback = evaluate_guess(guess, target_word)
-        print(f"Result: {result}")
+        #print(f"Result: {result}")
 
         # Update greens, yellows, blacks
         for color, idx, letter in feedback:
@@ -95,7 +95,7 @@ def wordle(guesses, answers):
             f.write(str(x) + " -> " + y + "\n")
 
         if guess == target_word:
-            print(f"Congratulations! The bot guessed the word: {target_word}")
+            #print(f"Congratulations! The bot guessed the word: {target_word}")
             break
 
         attempts += 1
@@ -105,5 +105,5 @@ def wordle(guesses, answers):
 guesses = load_dictionary('guesses.txt')
 answers = load_dictionary('answers.txt')
 
-for i in range(10000):
+for i in range(1000):
     wordle(guesses, answers)

@@ -40,3 +40,21 @@ optimizer.zero_grad()
 loss.backward()
 optimizer.step()
 
+# --- WordleNet Model ---
+class WordleNet(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super().__init__()
+        self.fc = nn.Sequential(
+            nn.Linear(input_size, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, output_size)
+        )
+
+    def forward(self, x):
+        return self.fc(x)
+
+input_size = X_train.shape[1]
+hidden_size = 256
+output_size = len(set(y.tolist()))
+
+model = WordleNet(input_size, hidden_size, output_size)
