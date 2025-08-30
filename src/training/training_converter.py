@@ -2,8 +2,11 @@ import ast
 import string
 import json
 
+training_data = "C:\\Users\\train\\Documents\\AI_WORDLE\\training_data.txt" # Edit with path to training data file
+dataset = "C:\\Users\\train\\Documents\\AI_WORDLE\\dataset.json"            # Edit with path to dataset file
+
 # Load your guess list (all possible guesses) and create a word->index mapping
-with open("answers.txt", "r") as f:
+with open("data\\answers.txt", "r") as f:
     answer_list = [line.strip() for line in f]
 word_to_idx = {word: i for i, word in enumerate(answer_list)}
 
@@ -69,4 +72,4 @@ def convert_txt_to_json(input_file, output_file):
     print(f"✅ Converted {input_file} -> {output_file} with {len(dataset)} samples")
 
 if __name__ == "__main__":
-    convert_txt_to_json("training_data.txt", "dataset.json")
+    convert_txt_to_json(training_data, dataset)

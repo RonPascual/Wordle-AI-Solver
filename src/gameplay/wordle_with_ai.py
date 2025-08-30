@@ -5,7 +5,7 @@ import string
 import random
 
 # --- Load Dataset for reference ---
-with open("answers.txt") as f:
+with open("data\\answers.txt") as f:
     answer_list = [line.strip() for line in f]
 
 answer_to_idx = {word: i for i, word in enumerate(answer_list)}
@@ -31,7 +31,7 @@ hidden_size = 256
 output_size = len(answer_list)
 
 model = WordleNet(input_size, hidden_size, output_size)
-model.load_state_dict(torch.load("wordle_model.pth"))
+model.load_state_dict(torch.load("models\\wordle_model.pth"))
 model.eval()
 
 # --- Encoding functions ---
@@ -107,6 +107,8 @@ def play_wordle(target_word):
             guess_idx = max(valid_idxs, key=lambda idx: probs[idx])
             guess = idx_to_answer[guess_idx]
 
+        print(f"Attempt {attempt}: {guess}")  # <-- Already prints guess
+
         remaining_guesses.remove(guess)
         # --- Generate feedback ---
         feedback = []
@@ -122,18 +124,27 @@ def play_wordle(target_word):
                 feedback.append(('black', i, guess[i]))
                 blacks.add(guess[i])
 
+        # Print feedback for this guess with colors
+        color_map = {
+            'green': '\033[1;32m',
+            'yellow': '\033[1;33m',
+            'black': '\033[1;90m'
+        }
+        feedback_str = ''.join([f"{color_map[color]}{letter}\033[0m" for color, i, letter in feedback])
+        print(f"Feedback: {feedback_str}")
+
         if guess == target_word:
             return attempt  # solved
     return None  # failed
 
 # --- Test AI ---
-num_games = 100
+num_games = 5
 results = []
 for _ in range(num_games):
     target = random.choice(answer_list)
     attempts = play_wordle(target)
     results.append(attempts)
-    print(f"Target: {target}, Attempts: {attempts}")  # <-- Add this line
+    print(f"Target: {target}, Attempts: {attempts}")  
 
 solved = sum(1 for r in results if r is not None)
 print(f"Solved {solved}/{num_games} games")

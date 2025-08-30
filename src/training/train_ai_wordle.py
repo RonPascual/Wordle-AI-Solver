@@ -1,3 +1,6 @@
+# train_ai_wordle.py - A program to train an AI model for Wordle
+# By: Ron Pascual
+
 import json
 import torch
 import torch.nn as nn
@@ -5,8 +8,10 @@ import torch.optim as optim
 from sklearn.model_selection import train_test_split
 import os
 
-# --- Load Dataset ---
-with open("dataset.json", "r") as f:
+dataset = "C:\\Users\\train\\Documents\\AI_WORDLE\\dataset.json" # Edit with path to dataset file
+
+# Load Dataset
+with open(dataset, "r") as f:
     data = json.load(f)
 
 # Separate features and labels
@@ -22,7 +27,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# --- WordleNet Model ---
+# WordleNet AI Model
 class WordleNet(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
         super().__init__()
@@ -41,17 +46,17 @@ output_size = 2315  # Number of possible answers
 
 model = WordleNet(input_size, hidden_size, output_size)
 
-# --- Load previous model if exists ---
+# Load previous model if it exists
 model_path = "wordle_model.pth"
 if os.path.exists(model_path):
     model.load_state_dict(torch.load(model_path))
     print("Loaded existing model for continued training.")
 
-# --- Loss and Optimizer ---
+# Loss and Optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# --- Training Loop ---
+# Training Loop
 epochs = 10
 batch_size = 64
 
@@ -73,7 +78,7 @@ for epoch in range(epochs):
 
     avg_loss = running_loss / (X_train.size()[0] / batch_size)
     
-    # Evaluate on test set
+    # Evaluate on the test set
     with torch.no_grad():
         test_outputs = model(X_test)
         _, predicted = torch.max(test_outputs, 1)
@@ -81,7 +86,7 @@ for epoch in range(epochs):
 
     print(f"Epoch {epoch+1}/{epochs} - Loss: {avg_loss:.4f}, Test Accuracy: {accuracy*100:.2f}%")
 
-# --- Save the model ---
+# Save model
 torch.save(model.state_dict(), model_path)
 print(f"Model saved to {model_path}")
 print("Training complete.")

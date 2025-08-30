@@ -1,5 +1,6 @@
 import random
 
+training_data = "C:\\Users\\train\\Documents\\AI_WORDLE\\training_data.txt" # Edit with path to training data file
 
 def load_dictionary(file_path):
     with open(file_path) as file:
@@ -91,19 +92,19 @@ def wordle(guesses, answers):
 
         y = guess
 
-        with open("training_data.txt", "a") as f:
+        with open(training_data, "a") as f:
             f.write(str(x) + " -> " + y + "\n")
 
         if guess == target_word:
-            #print(f"Congratulations! The bot guessed the word: {target_word}")
+            print(f"Congratulations! The bot guessed the word: {target_word}")
             break
 
         attempts += 1
     else:
         print(f"Sorry, the bot did not guess the word. The word was: {target_word}")
 
-guesses = load_dictionary('guesses.txt')
-answers = load_dictionary('answers.txt')
+guesses = load_dictionary("data\\guesses.txt")
+answers = load_dictionary("data\\answers.txt")
 
-for i in range(1000):
+for i in range(1000):   # Simulates 1000 games of Wordle (change this number to simulate more or fewer games)
     wordle(guesses, answers)

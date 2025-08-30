@@ -1,4 +1,5 @@
-# alphabet_sort.py
+# alphabet_sort.py - a program that sorts the contents of a text file alphabetically
+# By: Ron Pascual
 
 def sort_file_alphabetically(input_file, output_file):
     # Read all lines from the file
